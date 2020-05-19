@@ -102,7 +102,7 @@ function setupLoadFromRiotForm(state: State, form: HTMLFormElement, logger: Logg
         let completedMatches = 0;
         logger.startProgress(matchRefs.length);
         const matchFetcher = async () => {
-            while (matchIndex < matches.length) {
+            while (matchIndex < matchRefs.length) {
                 const matchId = matchRefs[matchIndex++].gameId;
                 const r = await getMatch(config, matchId);
                 const queue = (await queues())[r.queueId];
@@ -122,12 +122,12 @@ function setupLoadFromRiotForm(state: State, form: HTMLFormElement, logger: Logg
                     team.push({
                         name: player.summonerName,
                         champion: champion.name,
-                        summoner1: summoner1.name,
-                        summoner2: summoner2.name
+                        summoner1: summoner1?.name,
+                        summoner2: summoner2?.name
                     });
                 }
                 let insertAt = matches.length;
-                while (insertAt > 0 && matches[insertAt - 1].time > match.time) {
+                while (insertAt > 0 && matches[insertAt - 1].time < match.time) {
                     --insertAt;
                 }
                 matches.splice(insertAt, 0, match);

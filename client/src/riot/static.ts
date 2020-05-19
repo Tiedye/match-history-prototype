@@ -27,7 +27,7 @@ interface DDrag<T> {
     type: string,
     format: string,
     version: string,
-    data: T[]
+    data: { [key: string]: T }
 }
 
 interface ChampionDTO {
@@ -85,7 +85,7 @@ export function champions() {
         .then(async r => {
             const _cs: DDrag<ChampionDTO> = await r.json();
             const map: { [key: number]: ChampionDTO } = {};
-            for (const c of _cs.data) {
+            for (const c of Object.values(_cs.data)) {
                 map[+c.key] = c;
             }
             return map;
@@ -137,7 +137,7 @@ export function summoners() {
         .then(async r => {
             const _cs: DDrag<SummonerDTO> = await r.json();
             const map: { [key: number]: SummonerDTO } = {};
-            for (const c of _cs.data) {
+            for (const c of Object.values(_cs.data)) {
                 map[+c.key] = c;
             }
             return map;

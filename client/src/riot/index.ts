@@ -1,6 +1,8 @@
 import { SummonerDTO, MatchlistDto, MatchDto } from './schema';
 import { trim } from '../util';
 
+export const FORWARD_URL = 'http://localhost:3333/getforward';
+
 export const PLATFORMS = {
     'br': 'br1.api.riotgames.com',
     'eun': 'eun1.api.riotgames.com',
@@ -28,10 +30,11 @@ export interface RiotConfig {
 
 async function fetchRiot<T, U extends {} = {}>(config: RiotConfig, path: string, params?: { [key: string]: string | undefined }, body?: U): Promise<T> {
     for (let attempt = 0; attempt < _MAX_ATTEMPTS; ++attempt) {
-        const r = await fetch(`https://${config.platform}${path}?${params ? new URLSearchParams(trim(params)).toString() : ''}`, {
-            headers: new Headers({ 'X-Riot-Token': config.auth }),
-            method: body ? 'POST': 'GET'
-        });
+        const r = await fetch(`${FORWARD_URL}?url=${encodeURIComponent(`https://${config.platform}${path}?${params ? new URLSearchParams(trim(params)).toString() : ''}`)}&headers=${encodeURIComponent(JSON.stringify({ 'X-Riot-Token': config.auth }))}`);
+        // const r = await fetch(`https://${config.platform}${path}?${params ? new URLSearchParams(trim(params)).toString() : ''}`, {
+        //     headers: new Headers({ 'X-Riot-Token': config.auth }),
+        //     method: body ? 'POST': 'GET'
+        // });
         if (r.status === 429) {
             await new Promise<void>(resolve => setTimeout(() => resolve(), _INITIAL_RETRY * Math.pow(_EXPONENTIAL_FALLOFF, attempt)));
             continue;
