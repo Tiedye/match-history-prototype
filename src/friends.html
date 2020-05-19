@@ -1,0 +1,28 @@
+<style>
+    .rwt-friends input {
+        display: block;
+    }
+</style>
+<div class="rwt-friends">
+    <div class="initial-data">
+        <form class="load-from-riot">
+            <p><label>Api Key: <input type="text" name="apikey"></label></p>
+            <p><label>Player Name: <input type="text" name="playername"></label></p>
+            <p><label>Platform: <select name="platform">
+
+            </select></label></p>
+            <p><button type="submit">Load Player Data</button></p>
+        </form>
+        <form class="load-from-file">
+            <p><label><input type="file" name="infile"></label></p>
+            <p><button type="submit">Load Player Data</button></p>
+        </form>
+    </div>
+    <div class="visualizer">
+        <div class="period-selector">
+            <div class="slider">
+                <div class="label"></div>
+            </div>
+        </div>
+    </div>
+</div>
